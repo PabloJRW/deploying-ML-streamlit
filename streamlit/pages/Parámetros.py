@@ -3,6 +3,7 @@ import sys
 import pandas as pd
 import streamlit as st
 
+from sklearn.preprocessing import label_binarize
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
@@ -18,13 +19,19 @@ from functions.params_selector import add_params
 
 # DATA
 ###############################################################################
+
 data = pd.read_csv(os.path.join('datasets','raw','Iris.csv'))
 data.drop('Id', axis=1, inplace=True)
 
 X = data.drop('Species', axis=1)
 y = data['Species']
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.95, random_state=42)
+# Binariza las etiquetas utilizando One-vs-Rest
+y_bin = label_binarize(y, classes=[0, 1, 2])
+n_classes = y_bin.shape[1]
+
+
+X_train, X_test, y_train, y_test = train_test_split(X, y_bin, test_size=.95, random_state=42)
 
 
 ################################################################################
@@ -58,21 +65,24 @@ elif clf_selected == "SVM":
     params["C"] = C
 
 
-#  
+# ############################################################################
 clf = get_clf(clf_selected, params)
 clf.fit(X_train, y_train)
 y_pred = clf.predict(X_test)
+y_prob = clf.predict_proba(X_test)
 
 
+auc_plot = plot_multiclass_roc_auc(y_test, 3, y_prob)
 
-#y_prob = clf.predict_proba(X_test)
-
-#roc_auc_plot = plot_multiclass_roc_auc(data, y_test, y_prob)
 
 scores = get_scores(y_test, y_pred)
 
 
+st.write(f"{clf_selected}")
+col1, col2 = st.columns(2)
+with col1:
+    st.pyplot(auc_plot)
 
-st.subheader("Puntajes de predicción")
-st.write(f"{clf_selected}: ")
-st.table(data=scores)
+with col2:
+    st.subheader("Puntajes de predicción")
+    st.table(data=scores)
