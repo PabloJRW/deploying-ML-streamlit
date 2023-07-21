@@ -1,5 +1,6 @@
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 
@@ -9,18 +10,26 @@ def get_clf(clf_selected, params):
     if clf_selected == "Random Forest":
         # Si es "Random Forest", crea un clasificador RandomForestClassifier
         # utilizando los parámetros n_estimators, max_depth y random_state
-        clf = OneVsRestClassifier(RandomForestClassifier(n_estimators = params["n_estimators"],
+        clf = OneVsRestClassifier(RandomForestClassifier(
+                                     n_estimators = params["n_estimators"],
                                      max_depth = params["max_depth"],
                                      random_state=42))
+    elif clf_selected == "Logistic Regression":
+        clf = LogisticRegression(
+                                multi_class='multinomial',
+                                solver = params["solver"],
+                                max_iter = params["max_iter"])
     elif clf_selected == "KNN":
         # Si es "KNN", crea un clasificador KNeighborsClassifier
         # utilizando el parámetro n_neighbors
-        clf = OneVsRestClassifier(KNeighborsClassifier(n_neighbors = params["K"]))
+        clf = OneVsRestClassifier(KNeighborsClassifier(
+                                     n_neighbors = params["K"]))
     elif clf_selected == "SVM":
         # Si es "SVM", crea un clasificador SVC (Support Vector Classifier)
         # utilizando los parámetros kernel y C
-        clf = OneVsRestClassifier(SVC(kernel=params["kernel"],
-                  C=params["C"]))
+        clf = OneVsRestClassifier(SVC(
+                                     kernel=params["kernel"],
+                                     C=params["C"]))
     else: 
         # Si el algoritmo seleccionado no es válido, genera un error
         raise ValueError("Algoritmo no válido")

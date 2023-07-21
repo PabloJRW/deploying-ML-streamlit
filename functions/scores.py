@@ -9,5 +9,5 @@ def get_scores(y_test, y_pred):
     prec = precision_score(y_test, y_pred, average='micro')
     rec = recall_score(y_test, y_pred, average='micro')
     f1 = f1_score(y_test, y_pred, average='micro')
-    scores = {'Accuracy':round(acc), 'Precision':prec, 'Recall':rec, 'F1':f1}
+    scores = {'Accuracy':acc, 'Precision':prec, 'Recall':rec, 'F1':f1}
     return scores
