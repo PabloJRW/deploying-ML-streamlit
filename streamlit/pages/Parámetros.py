@@ -27,11 +27,11 @@ X = data.drop('Species', axis=1)
 y = data['Species']
 
 # Binariza las etiquetas utilizando One-vs-Rest
-y_bin = label_binarize(y, classes=[0, 1, 2])
-n_classes = y_bin.shape[1]
+#y_bin = label_binarize(y, classes=[0, 1, 2])
+#n_classes = y_bin.shape[1]
 
 
-X_train, X_test, y_train, y_test = train_test_split(X, y_bin, test_size=.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.95, random_state=42)
 
 
 ################################################################################
@@ -72,7 +72,7 @@ y_pred = clf.predict(X_test)
 y_prob = clf.predict_proba(X_test)
 
 
-auc_plot = plot_multiclass_roc_auc(y_test, 3, y_prob)
+#auc_plot = plot_multiclass_roc_auc(y_test, 3, y_prob)
 
 
 scores = get_scores(y_test, y_pred)
@@ -80,8 +80,8 @@ scores = get_scores(y_test, y_pred)
 
 st.write(f"{clf_selected}")
 col1, col2 = st.columns(2)
-with col1:
-    st.pyplot(auc_plot)
+#with col1:
+ #   st.pyplot(auc_plot)
 
 with col2:
     st.subheader("Puntajes de predicción")
