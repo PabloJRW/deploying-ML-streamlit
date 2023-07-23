@@ -6,6 +6,10 @@ import joblib
 
 # Importación del modelo random forest
 rf_model = joblib.load("rf_model.joblib")
+# Importación del modelo Logistic Regression
+lr_model = joblib.load("lr_model.joblib")
+knn_model = joblib.load("knn_model.joblib")
+svm_model = joblib.load("svm_model.joblib")
 
 
 ###################################################
@@ -27,12 +31,19 @@ inputs_to_pred = np.array([sepal_length, sepal_width, petal_length, petal_width]
 
 # Predicción
 rf_pred = rf_model.predict(inputs_to_pred)
+lr_pred = lr_model.predict(inputs_to_pred)
+knn_pred = knn_model.predict(inputs_to_pred)
+svm_pred = svm_model.predict(inputs_to_pred)
 
 # Resultados de predicción
 with col3:
     st.subheader("Predicción")
-    st.markdown(f"Random Forest Predicted Class: **{rf_pred[0]}**")
-    st.write(f"Logistic Regression Predicted Class: ")
-    st.write(f"KNN Predicted Class: ")
-    st.write(f"SVM Forest Predicted Class: ")
+    st.markdown(f"Random Forest: ")
+    st.success(rf_pred[0])
+    st.markdown(f"Logistic Regression: ")
+    st.success(lr_pred[0])
+    st.write(f"KNN: ")
+    st.success(knn_pred[0])
+    st.write(f"SVM: ")
+    st.success(svm_pred[0])
     

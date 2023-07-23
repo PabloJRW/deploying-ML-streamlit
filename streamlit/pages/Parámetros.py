@@ -1,11 +1,13 @@
 import os
 import sys
 import pandas as pd
+import matplotlib.pyplot as plt
 import streamlit as st
 
 from sklearn.preprocessing import label_binarize
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_curve
+
 
 # Obtener la ruta del directorio "Iris" (directorio padre)
 ruta_padre = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
@@ -77,11 +79,24 @@ y_prob = clf.predict_proba(X_test)
 
 scores = get_scores(y_test, y_pred)
 
+from sklearn.metrics import roc_curve, auc, roc_auc_score, confusion_matrix
+import numpy as np
+import seaborn as sns
+
+conf_matrix = confusion_matrix(y_test, y_pred)
+
+fig = plt.figure(figsize=(6, 5))
+sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues')
+plt.xlabel('Etiqueta Predicha')
+plt.ylabel('Etiqueta Real')
+plt.title('Matriz de Confusión')
+plt.tight_layout()
 
 st.write(f"{clf_selected}")
 col1, col2 = st.columns(2)
-#with col1:
- #   st.pyplot(auc_plot)
+with col1:
+    st.subheader("Matriz de confusión")
+    st.write(fig)
 
 with col2:
     st.subheader("Puntajes de predicción")
