@@ -1,12 +1,13 @@
 import os
 import sys
+
+import seaborn as sns
 import pandas as pd
 import matplotlib.pyplot as plt
 import streamlit as st
 
-from sklearn.preprocessing import label_binarize
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_curve
+from sklearn.metrics import confusion_matrix
 
 
 # Obtener la ruta del directorio "Iris" (directorio padre)
@@ -15,32 +16,29 @@ ruta_padre = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
 sys.path.append(ruta_padre)
 
 from functions.classifier import get_clf
-from functions.plot import plot_multiclass_roc_auc
 from functions.scores import get_scores
-from functions.params_selector import add_params
+
 
 # DATA
 ###############################################################################
-
-data = pd.read_csv(os.path.join('datasets','raw','Iris.csv'))
+ruta = os.path.join("datasets","raw")
+data = pd.read_csv(os.path.join(ruta,'Iris.csv'))
 data.drop('Id', axis=1, inplace=True)
 
 X = data.drop('Species', axis=1)
 y = data['Species']
-
-# Binariza las etiquetas utilizando One-vs-Rest
-#y_bin = label_binarize(y, classes=[0, 1, 2])
-#n_classes = y_bin.shape[1]
-
+y_labels = y.unique()
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.95, random_state=42)
 
-
+# STREAMLIT APP
 ################################################################################
 st.title('Predicción de especies de Iris')
+st.info("En esta sección puedes elegir un modelo (Random Forest, Logistic Regression, KNN, SVM),\
+            modificar sus parámetros y ver en las métricas cómo se ajusta el modelo.")
 
-
-# SIDEBAR
+ 
+# STREAMLIT SIDEBAR
 #################################################################################
 st.sidebar.header("Parámetros")
 clf_selected = st.sidebar.selectbox("Selecciona un algoritmo:", ("Random Forest", "Logistic Regression", "KNN", "SVM"))
@@ -68,31 +66,28 @@ elif clf_selected == "SVM":
 
 
 # ############################################################################
-clf = get_clf(clf_selected, params)
-clf.fit(X_train, y_train)
-y_pred = clf.predict(X_test)
-y_prob = clf.predict_proba(X_test)
 
 
-#auc_plot = plot_multiclass_roc_auc(y_test, 3, y_prob)
+# MODELO
+clf = get_clf(clf_selected, params) # Instancia del modelo y sus parámetros
+clf.fit(X_train, y_train) # Entrenando el modelo...
+y_pred = clf.predict(X_test) # Predicción
 
-
+# Puntajes del modelo
 scores = get_scores(y_test, y_pred)
 
-from sklearn.metrics import roc_curve, auc, roc_auc_score, confusion_matrix
-import numpy as np
-import seaborn as sns
 
-conf_matrix = confusion_matrix(y_test, y_pred)
-
+# Confusion Matrix
+conf_matrix = confusion_matrix(y_test, y_pred)  
 fig = plt.figure(figsize=(6, 5))
-sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues')
+sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues', xticklabels=y_labels, yticklabels=y_labels)
 plt.xlabel('Etiqueta Predicha')
 plt.ylabel('Etiqueta Real')
 plt.title('Matriz de Confusión')
 plt.tight_layout()
 
-st.write(f"{clf_selected}")
+
+# ELEMENTOS STREAMLIT
 col1, col2 = st.columns(2)
 with col1:
     st.subheader("Matriz de confusión")
@@ -100,4 +95,5 @@ with col1:
 
 with col2:
     st.subheader("Puntajes de predicción")
-    st.table(data=scores)
+    st.dataframe(scores)
+

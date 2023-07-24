@@ -4,16 +4,18 @@ import streamlit as st
 import joblib
 
 
-# Importación del modelo random forest
-rf_model = joblib.load("rf_model.joblib")
-# Importación del modelo Logistic Regression
-lr_model = joblib.load("lr_model.joblib")
-knn_model = joblib.load("knn_model.joblib")
-svm_model = joblib.load("svm_model.joblib")
+# Importación de modelos
+rf_model = joblib.load("rf_model.joblib") # Random Forest
+lr_model = joblib.load("lr_model.joblib") # Logistic Regression
+knn_model = joblib.load("knn_model.joblib") # KNN
+svm_model = joblib.load("svm_model.joblib") # SVM
 
 
-###################################################
+################################################################################
 st.title('Predicción de especies de Iris')
+
+st.info("Puedes predecir la clase de Iris ingresando los varoles de las variables (Ancho de Sépalo, \
+        Largo de Sépalo, Ancho de Pétalo, Largo de Pétalo)")
   
 
 col1, col2, col3 = st.columns(3)
@@ -35,15 +37,19 @@ lr_pred = lr_model.predict(inputs_to_pred)
 knn_pred = knn_model.predict(inputs_to_pred)
 svm_pred = svm_model.predict(inputs_to_pred)
 
+
+boton = st.button("Predecir")
 # Resultados de predicción
-with col3:
-    st.subheader("Predicción")
-    st.markdown(f"Random Forest: ")
-    st.success(rf_pred[0])
-    st.markdown(f"Logistic Regression: ")
-    st.success(lr_pred[0])
-    st.write(f"KNN: ")
-    st.success(knn_pred[0])
-    st.write(f"SVM: ")
-    st.success(svm_pred[0])
+
+if boton:
+    with col3:
+        st.subheader("Predicción")
+        st.markdown(f"Random Forest: ")
+        st.success(rf_pred[0])
+        st.markdown(f"Logistic Regression: ")
+        st.success(lr_pred[0])
+        st.write(f"KNN: ")
+        st.success(knn_pred[0])
+        st.write(f"SVM: ")
+        st.success(svm_pred[0])
     
