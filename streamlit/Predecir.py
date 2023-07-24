@@ -1,14 +1,21 @@
 import numpy as np
 import streamlit as st
 
-import joblib
+import pickle
 
 
 # Importación de modelos
-rf_model = joblib.load("rf_model.joblib") # Random Forest
-lr_model = joblib.load("lr_model.joblib") # Logistic Regression
-knn_model = joblib.load("knn_model.joblib") # KNN
-svm_model = joblib.load("svm_model.joblib") # SVM
+with open('trained_models/rf_model.pkl', 'rb') as model: # Random Forest
+    rf_clf = pickle.load(model) 
+
+with open('trained_models/lr_model.pkl', 'rb') as model: # Logistic Regression
+    lr_clf = pickle.load(model)  
+
+with open('trained_models/knn_model.pkl', 'rb') as model: # KNN
+    knn_clf = pickle.load(model) 
+
+with open('trained_models/svm_model.pkl', 'rb') as model: # SVM
+    svm_clf = pickle.load(model) 
 
 
 ################################################################################
@@ -32,14 +39,14 @@ with col1:
 inputs_to_pred = np.array([sepal_length, sepal_width, petal_length, petal_width]).reshape(1, -1)
 
 # Predicción
-rf_pred = rf_model.predict(inputs_to_pred)
-lr_pred = lr_model.predict(inputs_to_pred)
-knn_pred = knn_model.predict(inputs_to_pred)
-svm_pred = svm_model.predict(inputs_to_pred)
+rf_pred = rf_clf.predict(inputs_to_pred)
+lr_pred = lr_clf.predict(inputs_to_pred)
+knn_pred = knn_clf.predict(inputs_to_pred)
+svm_pred = svm_clf.predict(inputs_to_pred)
 
 
-boton = st.button("Predecir")
 # Resultados de predicción
+boton = st.button("Predecir")
 
 if boton:
     with col3:
