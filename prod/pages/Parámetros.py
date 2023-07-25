@@ -34,8 +34,8 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.95, random_
 # STREAMLIT APP
 ################################################################################
 st.title('Predicción de especies de Iris')
-st.info("En esta sección puedes elegir un modelo (Random Forest, Logistic Regression, KNN, SVM),\
-            modificar sus parámetros y ver en las métricas cómo se ajusta el modelo.")
+st.info("Elige un modelo (Random Forest, Logistic Regression, KNN, SVM),\
+            y modifica sus parámetros para ver cómo se ajusta a los datos, según las métricas.")
 
  
 # STREAMLIT SIDEBAR
@@ -95,5 +95,5 @@ with col1:
 
 with col2:
     st.subheader("Puntajes de predicción")
-    st.dataframe(scores)
+    st.write(scores)
 
