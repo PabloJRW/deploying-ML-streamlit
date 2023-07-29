@@ -6,7 +6,7 @@ import numpy as np
 app = Flask(__name__)
 
 
-with open('prod/trained_models/rf_model.pkl', 'rb') as model: # Random Forest
+with open('trained_models/rf_model.pkl', 'rb') as model: # Random Forest
     rf_clf = pickle.load(model) 
 
 
