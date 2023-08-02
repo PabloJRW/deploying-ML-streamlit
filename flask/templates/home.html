@@ -10,7 +10,8 @@
     <title>Iris ML-Predecir</title>
 </head>
 <body>
-    <h1 class="h1 text-center mt-5">Predicción de especies de Iris</h1>
+    <h1 class="h1 text-center mt-5">Predicción de Especies de Iris</h1>
+    <p class="text-center mt-3">Introduzca las variables y conozca a qué clase de Iris pertenece.</p>
 
     <div class="container mt-5">
 
@@ -23,22 +24,22 @@
                     <div class="card-body">
                         <div class="input-group ">
                             <div class="input-group-text w-50">Longitud del Sépalo</div>
-                            <input type="number" name="lensep" class="form-control col-1">
+                            <input type="number" name="lensep" step="any" class="form-control col-1">
                         </div>
         
                         <div class="input-group mt-3">
                             <div class="input-group-text w-50 ">Ancho del Sépalo</div>
-                            <input type="number" name="widsep" class="form-control col-1">
+                            <input type="number" name="widsep" step="any" class="form-control col-1">
                         </div>
         
                         <div class="input-group mt-3">
                             <div class="input-group-text w-50 ">Longitud del Pétalo</div>
-                            <input type="number" name="lenpet" class="form-control">
+                            <input type="number" name="lenpet" step="any" class="form-control">
                         </div>
         
                         <div class="input-group mt-3">
                             <div class="input-group-text w-50">Ancho del Pétalo</div>
-                            <input type="number" name="widpet" class="form-control">
+                            <input type="number" name="widpet" step="any" class="form-control">
                         </div>                       
                     </div> 
                     <button type="submit" class="btn btn-success mb-3 ms-3">Predecir</button>
@@ -55,22 +56,22 @@
                         
                         <div class="input-group ">
                             <div class="input-group-text w-50">Random Forest</div>
-                            <p class="form-control">{{ rf_pred }}</p>
+                            <p class="ms-3 mt-3">{{ rf_pred }}</p>
                         </div>
         
                         <div class="input-group mt-3">
                             <div class="input-group-text w-50 ">Logistic Regression</div>
-                            <p></p>
+                            <p class="ms-3 mt-3">{{ rf_pred }}</p
                         </div>
         
                         <div class="input-group mt-3">
                             <div class="input-group-text w-50 ">KNN</div>
-                            <p></p>
+                            <p class="ms-3 mt-3">{{ rf_pred }}</p
                         </div>
         
                         <div class="input-group mt-3">
                             <div class="input-group-text w-50">SVM</div>
-                            <p></p>
+                            <p class="ms-3 mt-3">{{ rf_pred }}</p
                         </div> 
                                             
                     </div>   

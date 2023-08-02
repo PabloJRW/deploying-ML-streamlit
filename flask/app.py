@@ -2,13 +2,24 @@ from flask import Flask, render_template, request, redirect, url_for
 import pickle
 import numpy as np
 
-
-app = Flask(__name__)
-
-
 with open('trained_models/rf_model.pkl', 'rb') as model: # Random Forest
     rf_clf = pickle.load(model) 
 
+app = Flask('Iris')
+
+def validate_number(value):
+    try:
+        return float(value)
+    except ValueError:
+        return None
+
+def validate_input(lensep, widsep, lenpet, widpet):
+    lensep = validate_number(lensep)
+    widsep = validate_number(widsep)
+    lenpet = validate_number(lenpet)
+    widpet = validate_number(widpet)
+
+    return lensep, widsep, lenpet, widpet
 
 @app.route("/", methods=["GET", "POST"])
 def get_variables():
@@ -18,13 +29,10 @@ def get_variables():
         lenpet = request.form.get("lenpet")
         widpet = request.form.get("widpet")
 
-        # Verificar que los valores sean números válidos antes de continuar
-        try:
-            lensep = float(lensep)
-            widsep = float(widsep)
-            lenpet = float(lenpet)
-            widpet = float(widpet)
-        except ValueError:
+        lensep, widsep, lenpet, widpet = validate_input(lensep, widsep, lenpet, widpet)
+
+        # Comprobamos si alguna de las entradas no es válida (None)
+        if None in [lensep, widsep, lenpet, widpet]:
             return "Por favor, ingrese valores numéricos válidos."
 
         return redirect(url_for('retorno', lensep=lensep, widsep=widsep, lenpet=lenpet, widpet=widpet))
@@ -34,14 +42,19 @@ def get_variables():
 
 @app.route("/retorno")
 def retorno(): 
-    lensep = float(request.args.get('lensep'))
-    widsep = float(request.args.get('widsep'))
-    lenpet = float(request.args.get('lenpet'))
-    widpet = float(request.args.get('widpet'))
+    lensep = request.args.get('lensep')
+    widsep = request.args.get('widsep')
+    lenpet = request.args.get('lenpet')
+    widpet = request.args.get('widpet')
+
+    lensep, widsep, lenpet, widpet = validate_input(lensep, widsep, lenpet, widpet)
+
+    # Comprobamos si alguna de las entradas no es válida (None)
+    if None in [lensep, widsep, lenpet, widpet]:
+        return "Por favor, ingrese valores numéricos válidos."
 
     # Arreglo de los valores introducidos
     inputs_to_pred = np.array([lensep, widsep, lenpet, widpet]).reshape(1, -1)
-
 
     # Predicción
     rf_pred = rf_clf.predict(inputs_to_pred)
