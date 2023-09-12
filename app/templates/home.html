@@ -58,9 +58,24 @@
                     <div class="card-header text-center fw-light">Predicción</div>          
                     <div class="card-body">
                         
-                        <div class="input-group ">
-                            <div class="input-group-text w-50 fw-light">Clase predicha:</div>
-                            <p class="ms-3 mt-3 fw-light">{{ rf_pred }}</p>
+                        <div class="input-group mb-1">
+                            <div class="input-group-text w-50 fw-light">Random Forest:</div>
+                            <p class="form-control ms-3 mt-3 fw-light">{{ rf_pred }}</p>
+                        </div>
+
+                        <div class="input-group mb-1">
+                            <div class="input-group-text w-50 fw-light">Logistic Regression:</div>
+                            <p class="form-control ms-3 mt-3 fw-light">{{ lr_pred }}</p>
+                        </div>
+
+                        <div class="input-group mb-1">
+                            <div class="input-group-text w-50 fw-light">Support Vector Machines:</div>
+                            <p class="form-control ms-3 mt-3 fw-light">{{ svm_pred }}</p>
+                        </div>
+
+                        <div class="input-group mb-1">
+                            <div class="input-group-text w-50 fw-light">K Nearest Neighbors:</div>
+                            <p class="form-control ms-3 mt-3 fw-light">{{ knn_pred }}</p>
                         </div>
             
                     </div>   

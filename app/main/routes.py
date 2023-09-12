@@ -3,8 +3,21 @@ from app.main import main_bp
 import pickle
 import numpy as np
 
+# IMPORTACIÓN DE MODELOS
+################################################################################
 with open('app/trained_models/rf_model.pkl', 'rb') as model: # Random Forest
     rf_clf = pickle.load(model) 
+
+with open('app/trained_models/lr_model.pkl', 'rb') as model: # Random Forest
+    lr_clf = pickle.load(model) 
+
+with open('app/trained_models/knn_model.pkl', 'rb') as model: # Random Forest
+    knn_clf = pickle.load(model) 
+
+with open('app/trained_models/svm_model.pkl', 'rb') as model: # Random Forest
+    svm_clf = pickle.load(model) 
+
+#################################################################################
 
 
 def validate_number(value):
@@ -58,8 +71,11 @@ def predicciones():
 
     # Predicción
     rf_pred = rf_clf.predict(inputs_to_pred)
+    lr_pred = lr_clf.predict(inputs_to_pred)
+    svm_pred = svm_clf.predict(inputs_to_pred)
+    knn_pred = knn_clf.predict(inputs_to_pred)
 
-    return render_template("home.html", rf_pred=rf_pred[0])
+    return render_template("home.html", rf_pred=rf_pred, lr_pred=lr_pred, svm_pred=rf_pred, knn_pred=knn_pred)
 
 
 
